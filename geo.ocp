@@ -1,4 +1,4 @@
 begin library "geo"
     sort  = false
-    files = ["angle.ml" "geo.ml"]
+    files = ["angle.ml" "tri.ml" "sector.ml" "geo.ml"]
 end

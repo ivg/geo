@@ -1,15 +1,11 @@
-(** Sector.
- *)
+(** Sector. *)
 
 (** {6 Типы данных} *)
 type t
 type a = Angle.t
 
 (** {6 Creation} *)
-val empty: unit -> t                     (** a sector, that doesn't contain anything  *)
-val full: unit -> t                      (** 360°  *)
-val vertical: a -> a -> t
-val horizontal: a -> a -> t
+val create: a -> a -> t
 val of_bisect: direct:a -> length:a -> t
 (** [bisect b r]   *)
 
