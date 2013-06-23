@@ -1,6 +1,3 @@
-open Batteries
-open Printf
-
 module A = Angle
 type a = A.t
 type t = a * a
@@ -21,7 +18,7 @@ let kras1940 = {
 }
 
 
-let earth_radius = wgs84.radius
+let earth_radius {radius=r} = r
 
 let create lat lon = lat, lon
 
@@ -48,8 +45,8 @@ let round n = int_of_float (floor (n +. 1.))
 let of_strfmt _ _ = failwith "Geo.of_strfmt is not implemented"
 
 
-let string_of_dms (d,m,s) = sprintf "% 02d°%d'%02.2f″" d m s
-let string_of_dmS (d,m,s) = sprintf "% 02d°%02d'%02d″" d m (round s)
+let string_of_dms (d,m,s) = Printf.sprintf "% 02d°%d'%02.2f″" d m s
+let string_of_dmS (d,m,s) = Printf.sprintf "% 02d°%02d'%02d″" d m (round s)
 
 
 let strfmt fmt p =
@@ -80,25 +77,25 @@ let bearing f t =
       (sin flat) *. (cos tlat) *. (cos ldif) in
   A.of_radian (atan2 y x)
 
-let distance f t =
+let distance ?datum:(datum=wgs84) f t =
   let flat = radian_of_latitude  f in
   let flon = radian_of_longitude f in
   let tlat = radian_of_latitude  t in
   let tlon = radian_of_longitude t in
-  let lond =  tlon -. flon in
-  let latd =  tlat -. flat in
+  let lond = tlon -. flon in
+  let latd = tlat -. flat in
   let t =
     ((sin (latd /. 2.)) ** 2.) +.
       ((sin (lond /. 2.)) ** 2.) *.
       (cos flat) *. (cos tlat) in
-  2. *. earth_radius *. (atan2 (sqrt t) (sqrt(1. -. t)))
+  2. *. earth_radius datum *. (atan2 (sqrt t) (sqrt(1. -. t)))
 
 
-let destination azth dist f =
+let destination ?datum:(datum=wgs84) azth dist f =
   let flat = radian_of_latitude  f in
   let flon = radian_of_longitude f in
   let azth = A.to_radian azth in
-  let ad = dist /. earth_radius in
+  let ad = dist /. earth_radius datum in
   let tlat =
     asin ((sin flat) *. (cos ad) +.
              (cos flat) *. (sin ad) *. (cos azth)) in

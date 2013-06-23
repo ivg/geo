@@ -8,9 +8,9 @@ type a = Angle.t  (** a type safe angle *)
 
 (** {6 Predefined constants} *)
 
-val earth_radius: float                 (** радиус геоида  *)
 val wgs84: datum                        (** World Geodetic System 1984  *)
 val kras1940: datum                     (** Krasovsky 1940 *)
+val earth_radius: datum -> float        (** Geoid radius  *)
 
 (** {6 Constructing} *)
 val create: a -> a -> t
@@ -37,14 +37,13 @@ val strfmt: string -> t -> string
 
 val bearing: t -> t -> a
 (** [bearing f t] a bearing from [f] to [t] *)
-val distance: t -> t -> float
+val distance: ?datum:datum -> t -> t -> float
 (** [distance f t] a earth distance from [f] to [t]*)
-val destination: a -> float -> t -> t
+val destination: ?datum:datum -> a -> float -> t -> t
 (** [destination b d p] returns [p'] such that [bearing p p' = b] and
     [distance p p' = d].
 *)
 
 val to_mercator: ?datum:datum -> t -> float * float
 (** [to_mercator ~datum p] returns [x,y] coordinates in mercator projection.
-    Default datum is wgs84.
-*)
+    Default datum is wgs84. *)
