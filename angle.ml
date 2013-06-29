@@ -4,13 +4,11 @@ let pi = 4. *. atan 1.
 let double_pi = 2. *. pi
 let half_pi = pi /. 2.
 
-let normalized_degree deg = mod_float (deg +. 360.) 360.
-let normalized_radian rad = mod_float (rad +. double_pi) (double_pi)
-let radian_of_degree deg = normalized_radian (deg *. atan(1.) /. 45.)
-let degree_of_radian rad = normalized_degree (rad *.  45. /. atan(1.))
+let radian_of_degree deg = deg *. atan 1. /. 45.
+let degree_of_radian rad = rad *. 45. /. atan 1.
 
-let of_radian r = normalized_radian r
-let to_radian r = normalized_radian r
+let of_radian r = r
+let to_radian r = r
 let of_degree = radian_of_degree
 let to_degree = degree_of_radian
 
@@ -28,25 +26,18 @@ let of_dms (d, m, s) =
     ((float_of_int d) +.
     ((float_of_int m) /. 60.) +. s /. 3600.)
 
-let compare a a' =
-  let r = a -. a' in
-  let eps = sqrt epsilon_float in
-  if   (abs_float r) < eps then 0
-  else match r with
-    | r when r > 0. -> 1
-    | _ -> -1
+let compare ?epsilon:(eps=sqrt epsilon_float) a a' =
+  match sin (a -. a') with
+  | n when abs_float n < eps ->  0
+  | n when n > 0.            ->  1
+  | _                        -> -1
 
+let difference a a' = a -. a'
+let sum a a' = a +. a'
 
-let difference a a' = normalized_radian (a -. a')
-let sum a a' = normalized_radian (a +. a')
-let bisector a a' = normalized_radian ((sum a a') /. 2.)
-let bisector a a' = normalized_radian (a +. (difference a' a) /. 2.)
-let multiply a n = normalized_radian (a *. n)
-let reverse a =  normalized_radian (a -. pi)
-
-let is_acute a = compare a half_pi = -1
-let is_obtuse a = compare a half_pi = 1
-
+let bisector a a' = atan2  (sin a +. sin a') (cos a +. cos a')
+let multiply a n = a *. n
+let reverse a =  a -. pi
 
 let cos = cos
 let sin = sin
@@ -60,9 +51,20 @@ let ( + ) a a' = sum a a'
 let ( - ) a a' = difference a a'
 let ( * ) a n = multiply a n
 
-let (<) a a' = -1 = (compare a a')
-let (<=) a a' = not (a' < a)
-let (>) a a' = 1 = (compare a a')
-let (>=) a a' = not (a < a')
-let (=) a a' = 0 = (compare a a')
-let (<>) a a' = not (a = a')
+let less a a' = compare a a' = -1
+let lesseq a a' = not(a' < a)
+let great a a' = compare a a' = 1
+let greateq a a' = not(a < a')
+let equal a a' = compare a a' = 0
+let not_equal a a' = not(equal a a')
+
+
+let (<) = less
+let (<=) = lesseq
+let (>) = great
+let (>=) = greateq
+let (=) = equal
+let (<>) = not_equal
+
+let is_acute a = a < half_pi
+let is_obtuse a = a > half_pi

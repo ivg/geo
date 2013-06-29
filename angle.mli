@@ -22,14 +22,6 @@ val to_degree: t -> float
 val of_dms: int * int * float -> t
 val to_dms: t -> int * int * float
 
-(** {6 Normalization} *)
-
-val normalized_degree: float -> float
-(** [normalized_degree d] is an angle that is equal to [d], but is
-    guaranteed to be non negative and not greater then [360]. *)
-val normalized_radian: float -> float
-(** [normalized_radian d] is an angle that is equal to [d], but is
-    guaranteed to be non negative and not greater then [2pi] *)
 
 (** {6 Conversion degree/radian}  *)
 val radian_of_degree: float -> float
@@ -41,9 +33,14 @@ val degree_of_radian: float -> float
 
 (** {6 Compare}  *)
 
-val compare: t -> t -> int
+val compare: ?epsilon:float ->  t -> t -> int
 (** [compare t t'] returns [-1] when angle [t] is more acute, [+1] if more obtuse
     and [0] if they're equal.  *)
+val equal: t -> t -> bool
+val less: t -> t -> bool
+val lesseq: t -> t -> bool
+val great: t -> t -> bool
+val greateq: t -> t -> bool
 
 val is_acute: t -> bool
 val is_obtuse: t -> bool
@@ -61,12 +58,11 @@ val atan: float -> t
 val atan2: float -> float -> t
 
 (** {7 Arithmetics}   *)
+val bisector: t -> t -> t
 val sum: t -> t -> t
 val difference: t -> t -> t
 val multiply: t -> float -> t
 val reverse: t -> t
-
-
 
 (** {6 Infixes} *)
 val ( + ): t -> t -> t

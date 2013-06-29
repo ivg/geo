@@ -1,4 +1,14 @@
+authors = [ "Ivan Gotovchits <ivg@ieee.org>" ]
+license = [ "GPLv3" ]
+
 begin library "geo"
     sort  = false
     files = ["angle.ml" "tri.ml" "sector.ml" "geo.ml"]
+end
+
+
+begin test "test"
+    dirname = "test"
+    files = ["angles_common.ml" "test_angle.ml"]
+    requires = ["oUnit" "geo"]
 end
