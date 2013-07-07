@@ -1,1 +1,3 @@
 <run_test.*> or <test/*> : pkg_oUnit
+<test/*.cmx> : for-pack(Test)
+

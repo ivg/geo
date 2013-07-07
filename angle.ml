@@ -26,11 +26,6 @@ let of_dms (d, m, s) =
     ((float_of_int d) +.
     ((float_of_int m) /. 60.) +. s /. 3600.)
 
-let compare ?epsilon:(eps=sqrt epsilon_float) a a' =
-  match sin (a -. a') with
-  | n when abs_float n < eps ->  0
-  | n when n > 0.            ->  1
-  | _                        -> -1
 
 let difference a a' = a -. a'
 let sum a a' = a +. a'
@@ -38,6 +33,18 @@ let sum a a' = a +. a'
 let bisector a a' = atan2  (sin a +. sin a') (cos a +. cos a')
 let multiply a n = a *. n
 let reverse a =  a -. pi
+
+let normalized a = bisector a a
+let normalized_unsigned a =
+  let a = normalized a in
+  if a < 0. then a +. double_pi else a
+
+let compare ?epsilon:(eps=sqrt epsilon_float) a a' =
+  match sin (a -. a') with
+  | n when abs_float n < eps ->  0
+  | n when n > 0.            ->  1
+  | _                        ->  -1
+
 
 let cos = cos
 let sin = sin
@@ -52,18 +59,16 @@ let ( - ) a a' = difference a a'
 let ( * ) a n = multiply a n
 
 let less a a' = compare a a' = -1
-let lesseq a a' = not(a' < a)
-let great a a' = compare a a' = 1
-let greateq a a' = not(a < a')
-let equal a a' = compare a a' = 0
-let not_equal a a' = not(equal a a')
-
-
 let (<) = less
+let lesseq a a' = not(a' < a)
 let (<=) = lesseq
+let great a a' = compare a a' = 1
 let (>) = great
+let greateq a a' = not(a < a')
 let (>=) = greateq
+let equal a a' = compare a a' = 0
 let (=) = equal
+let not_equal a a' = not(equal a a')
 let (<>) = not_equal
 
 let is_acute a = a < half_pi

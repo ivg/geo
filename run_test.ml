@@ -4,6 +4,7 @@ open Test
 let suite =
   "All" >::: [
     Test_angle.suite;
+    Test_sector.suite;
   ]
 
 let _ =
