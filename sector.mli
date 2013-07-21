@@ -21,7 +21,7 @@ val radian_of_length: t -> float
 (** [radians_of_length s] [s] *)
 val degree_of_length: t -> float
 (** [degrees_of_length s]  [s] *)
-val bisect: t -> a
+val bisector: t -> a
 (** [bisect s] [s] *)
 
 (** {6 Операции между секторами} *)

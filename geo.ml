@@ -17,8 +17,7 @@ let kras1940 = {
   flattening = 298.3;
 }
 
-
-let earth_radius {radius=r} = r
+let mean_earth_radius = 6371008.77141505945
 
 let create lat lon = lat, lon
 
