@@ -8,16 +8,9 @@
     interval. We call this values principal.
 
     The only non principal value is [full] that is equal to full
-    revolution or 2xpi. There is no way to create exactly this value by
+    revolution or $2\pi$. There is no way to create exactly this value by
     yourself. Indeed, [Angle.(full == 2 * pi)] is [false]. Because
     they're not identical.
-
-    {2 On angular ordering}
-
-    When comparing to angles we define an arbitary ordering:
-    the angle, that lies counter clockwise to another angle is the
-    bigger one. This works fine,
-
 
 *)
 (** {6 Data types} *)
@@ -74,10 +67,19 @@ val degree_of_radian: float -> float
 (** {6 Compare}  *)
 
 val compare: ?epsilon:float ->  t -> t -> int
-(** [compare t t']   *)
+(** [compare x y] returns [0] if $x = y \pm 2\pi$ holds, otherwise if [xy]
+    forms negatively oriented system the [-1] is returned, accordingly [1] is
+    returned,for the positivly orientied systems.
+
+    To clarify, the list [north; east; south; west] is sorted in increasing
+    order. *)
 val identical: t -> t -> bool
+(** [identical a b] returns [true] iff [a] is represented by the same floating
+    point number as [b].   *)
 val not_identical: t -> t -> bool
+(** [not_identical a b = not (identical a b)]  *)
 val equal: t -> t -> bool
+(** [equal a b] holds iff $x = y \pm 2\pi$ *)
 val less: t -> t -> bool
 val lesseq: t -> t -> bool
 val great: t -> t -> bool
