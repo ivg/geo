@@ -1,3 +1,25 @@
-<run_test.*> or <test/*> : pkg_oUnit
-<test/*.cmx> : for-pack(Test)
-
+# OASIS_START
+# DO NOT EDIT (digest: 5a06dbd844b29170e56123b76151e71e)
+# Ignore VCS directories, you can use the same kind of rule outside 
+# OASIS_START/STOP if you want to exclude directories that contains 
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library geo
+"lib/geo.cmxs": use_geo
+"lib/angle.cmx": for-pack(Geo)
+"lib/point.cmx": for-pack(Geo)
+"lib/sector.cmx": for-pack(Geo)
+# Library test
+"test/test.cmxs": use_test
+<test/*.ml{,i}>: use_geo
+<test/*.ml{,i}>: pkg_oUnit
+# OASIS_STOP

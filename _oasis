@@ -1,0 +1,25 @@
+OASISFormat: 0.3
+Name:        geo
+Version:     0.1
+Synopsis:    geographic points and algorithms
+Authors:     Ivan Gotovchits <ivg@ieee.org>
+License:     LGPL-2.1 with OCaml linking exception
+OCamlVersion: >= 3.11
+Homepage:    https://github.org/ivg/geo
+
+Library geo
+  Path:       lib
+  Pack:       true
+  BuildTools: ocamlbuild
+  Modules:    Angle, Point, Sector
+  
+Test test
+  Command: run_test.native
+
+Library test
+  Path:            test
+  BuildTools:      ocamlbuild
+  Modules:         Test_angle, Test_sector
+  BuildDepends:    oUnit, geo
+  InternalModules: Angles_common
+  
