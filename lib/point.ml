@@ -18,8 +18,9 @@ let kras1940 = {
 }
 
 let mean_earth_radius = 6371008.77141505945
+let earth_radius = mean_earth_radius
 
-let create lat lon = lat, lon
+let create ~lat ~lon = lat, lon
 
 let of_radians ~lat ~lon =
   A.of_radian lat,
@@ -72,7 +73,7 @@ let bearing f t =
       (sin flat) *. (cos tlat) *. (cos ldif) in
   A.of_radian (atan2 y x)
 
-let distance ?datum:(datum=wgs84) f t =
+let distance f t =
   let flat = radian_of_latitude  f in
   let flon = radian_of_longitude f in
   let tlat = radian_of_latitude  t in
@@ -83,13 +84,13 @@ let distance ?datum:(datum=wgs84) f t =
     ((sin (latd /. 2.)) ** 2.) +.
       ((sin (lond /. 2.)) ** 2.) *.
       (cos flat) *. (cos tlat) in
-  2. *. earth_radius datum *. (atan2 (sqrt t) (sqrt(1. -. t)))
+  2. *. mean_earth_radius *. (atan2 (sqrt t) (sqrt(1. -. t)))
 
-let destination ?datum:(datum=wgs84) azth dist f =
+let destination azth dist f =
   let flat = radian_of_latitude  f in
   let flon = radian_of_longitude f in
   let azth = A.to_radian azth in
-  let ad = dist /. earth_radius datum in
+  let ad = dist /. mean_earth_radius in
   let tlat =
     asin ((sin flat) *. (cos ad) +.
              (cos flat) *. (sin ad) *. (cos azth)) in

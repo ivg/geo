@@ -10,13 +10,13 @@ type a = Angle.t  (** a type safe angle *)
 
 val wgs84: datum                        (** World Geodetic System 1984  *)
 val kras1940: datum                     (** Krasovsky 1940 *)
-val earth_radius: datum -> float        (** Geoid radius  *)
+val earth_radius: float        (** Mean earth radius  *)
 
 (** {6 Constructing} *)
 val create: lat:a -> lon:a -> t
 
 val of_degrees: lat:float -> lon:float -> t
-val of_radians: lat:float -> lonfloat -> t
+val of_radians: lat:float -> lon:float -> t
 
 (** {6 Access} *)
 
