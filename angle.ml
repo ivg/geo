@@ -24,14 +24,38 @@ let north_east = atan 1.
 let south_west = west -. atan 1.
 let south_east = east +. atan 1.
 
+
+
+let of_dms (d, m, s) = float d *. degree +. float m *. minute +. s *. second
+
+let make f a a' = atan2 (sin (f a a')) (cos (f a a'))
+let difference = make (-.)
+let sum = make (+.)
+let bisector a a' =
+  let nom = sin a +. sin a' in
+  let den = cos a +. cos a' in
+  match nom,den with
+  | 0.,_ -> east +. sin a *. east
+  | _,0. -> cos a *. east
+  | _   -> atan2 nom den
+let multiply = make ( *. )
+let divide = make ( /. )
+let times a b = multiply (float a) b
+let fraction a b = divide a (float b)
+let reverse a =  difference a pi
+let complement a = difference right a
+let supplement a = difference pi a
+let explement a = reverse a
+let principal a = bisector a a
+let non_negative a = mod_float (a +. 2. *. pi) (2. *. pi)
+
 let radian_of_degree x = x *. atan 1. /. 45.
 let degree_of_radian x = x *. 45. /. atan 1.
 
-let of_radian r = r
-let to_radian r = r
-let of_degree = radian_of_degree
+let of_radian a = principal a
+let to_radian a = principal a
+let of_degree d = multiply d deg
 let to_degree = degree_of_radian
-
 let to_dms rad =
   let deg = degree_of_radian rad in
   let f,d = modf deg in
@@ -41,27 +65,11 @@ let to_dms rad =
   int_of_float m,
   s
 
-let of_dms (d, m, s) = float d *. degree +. float m *. minute +. s *. second
-
-let make f a a' = atan2 (sin (f a a')) (cos (f a a'))
-let difference = make (-.)
-let sum = make (+.)
-let bisector a a' = atan2  (sin a +. sin a') (cos a +. cos a')
-let multiply = make ( *. )
-let divide = make ( /. )
-let times a b = multiply (float a) b
-let fraction a b = divide a (float b)
-let reverse a =  difference a pi
-let complement a = difference right a
-let supplement a = difference pi a
-let explement a = reverse a
-
 let compare ?epsilon:(eps=sqrt epsilon_float) a a' =
   match sin (a -. a') with
-  | n when abs_float n < eps ->  0
+  | n when acos (cos (a -. a')) < eps ->  0
   | n when n > 0.            ->  1
   | _                        ->  -1
-
 
 let cos = cos
 let sin = sin

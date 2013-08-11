@@ -1,6 +1,24 @@
 (** Typesafe angles.
 
     This module abstracts an angle.
+
+    {2 On function principality}
+
+    All functions in this module return values that lies in [-pi,pi]
+    interval. We call this values principal.
+
+    The only non principal value is [full] that is equal to full
+    revolution or 2xpi. There is no way to create exactly this value by
+    yourself. Indeed, [Angle.(full == 2 * pi)] is [false]. Because
+    they're not identical.
+
+    {2 On angular ordering}
+
+    When comparing to angles we define an arbitary ordering:
+    the angle, that lies counter clockwise to another angle is the
+    bigger one. This works fine,
+
+
 *)
 (** {6 Data types} *)
 
@@ -83,6 +101,8 @@ val bisector: t -> t -> t
 val complement: t -> t
 val supplement: t -> t
 val explement:  t -> t
+val non_negative: t -> t
+
 
 (** { 7 Trigonometry }  *)
 

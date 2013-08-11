@@ -134,8 +134,8 @@ let suite =
 
     "bisect1"  >:: bisect hor d45  d0    d90;
     "bisect2"  >:: bisect hor d270 d180  d0;
-    "bisect2"  >:: bisect hor d180 d90   d270;
-    "bisect2"  >:: bisect hor d0   d270  d90;
+    "bisect3"  >:: bisect hor d180 d90   d270;
+    "bisect4"  >:: bisect hor d0   d270  d90;
     "mbisect1" >:: bisect hor d180 md270 d270;
     "mbisect2" >:: bisect hor d270 md90  md90;
     "bisect1-v"  >:: bisect ver d45  d0    d90;
