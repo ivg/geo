@@ -13,10 +13,10 @@ val kras1940: datum                     (** Krasovsky 1940 *)
 val earth_radius: datum -> float        (** Geoid radius  *)
 
 (** {6 Constructing} *)
-val create: a -> a -> t
+val create: lat:a -> lon:a -> t
 
-val of_degrees: float -> float -> t
-val of_radians: float -> float -> t
+val of_degrees: lat:float -> lon:float -> t
+val of_radians: lat:float -> lonfloat -> t
 
 (** {6 Access} *)
 
@@ -25,21 +25,19 @@ val longitude: t -> a
 
 val degree_of_latitude: t -> float
 val degree_of_longitude: t -> float
-
 val radian_of_latitude: t -> float
 val radian_of_longitude: t -> float
 
 (** {6 String formatings} *)
-val of_strfmt: string -> string -> t
 val strfmt: string -> t -> string
 
 (** {6 Operations} *)
 
 val bearing: t -> t -> a
 (** [bearing f t] a bearing from [f] to [t] *)
-val distance: ?datum:datum -> t -> t -> float
+val distance: t -> t -> float
 (** [distance f t] a earth distance from [f] to [t]*)
-val destination: ?datum:datum -> a -> float -> t -> t
+val destination: a -> float -> t -> t
 (** [destination b d p] returns [p'] such that [bearing p p' = b] and
     [distance p p' = d].
 *)

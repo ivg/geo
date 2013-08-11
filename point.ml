@@ -21,11 +21,11 @@ let mean_earth_radius = 6371008.77141505945
 
 let create lat lon = lat, lon
 
-let of_radians lat lon =
+let of_radians ~lat ~lon =
   A.of_radian lat,
   A.of_radian lon
 
-let of_degrees lat lon =
+let of_degrees ~lat ~lon =
   A.of_degree lat,
   A.of_degree lon
 
@@ -40,10 +40,6 @@ let radian_of_longitude (_, lon) = A.to_radian lon
 
 
 let round n = int_of_float (floor (n +. 1.))
-
-let of_strfmt _ _ = failwith "Geo.of_strfmt is not implemented"
-
-
 let string_of_dms (d,m,s) = Printf.sprintf "% 02d°%d'%02.2f″" d m s
 let string_of_dmS (d,m,s) = Printf.sprintf "% 02d°%02d'%02d″" d m (round s)
 
@@ -89,7 +85,6 @@ let distance ?datum:(datum=wgs84) f t =
       (cos flat) *. (cos tlat) in
   2. *. earth_radius datum *. (atan2 (sqrt t) (sqrt(1. -. t)))
 
-
 let destination ?datum:(datum=wgs84) azth dist f =
   let flat = radian_of_latitude  f in
   let flon = radian_of_longitude f in
@@ -111,5 +106,5 @@ let to_mercator ?datum:(d=wgs84) (lat,lon) =
   let f = d.flattening and r = d.radius in
   let b = (f *. r -. r) /. f in
   let e = sqrt (r**2. -. b**2.) /. r in
-  let v1 = arth(sin(lat)) and v2 = e *. arth (e *. sin(lat)) in
+  let v1 = arth (sin lat) and v2 = e *. arth (e *. sin lat) in
   lon *. r, (v1 -. v2) *.r
